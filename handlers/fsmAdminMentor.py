@@ -2,9 +2,10 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-
 from config import bot, ADMINS
-from keyboard.client_kb import cancel_markup
+from keyboard.client_cb import cancel_markup
+
+
 
 
 class FSMAdmin(StatesGroup):
@@ -71,6 +72,7 @@ async def load_group(message: types.Message, state: FSMContext):
 
     await FSMAdmin.finish()
     await message.answer("Свободен")
+    await sql_command_insert(state)
 
 
 async def cancel_reg(message: types.Message, state: FSMContext):
@@ -91,3 +93,4 @@ def register_handlers_fsm_anketa(dp: Dispatcher):
     dp.register_message_handler(load_age, state=FSMAdmin.age)
     dp.register_message_handler(load_direction, state=FSMAdmin.direction)
     dp.register_message_handler(load_group, state=FSMAdmin.group)
+    dp.register_message_handler(get_random_mentor, commands=['get'])
